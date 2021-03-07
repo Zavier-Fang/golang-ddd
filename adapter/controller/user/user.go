@@ -5,27 +5,21 @@ import (
 	"log"
 	"server/adapter/controller"
 	"server/application"
-	"server/application/user"
 	"server/domain/user/entity"
 	"strconv"
 )
 
-type Controller struct {
+type UserController struct {
 	App application.UserApplication
 }
 
-func NewUserController(engine *gin.Engine) controller.UserController {
-	ctrl := Controller{
-		App: user.NewUserApplication(),
-	}
+func (ctrl UserController) InitRoute(engine *gin.Engine) {
 	engine.GET("ping", controller.Ping)
 	engine.GET("user/:id", ctrl.QueryUserById)
 	engine.POST("user", ctrl.CreateUser)
-
-	return &ctrl
 }
 
-func (ctrl Controller) QueryUserById(ctx *gin.Context) {
+func (ctrl UserController) QueryUserById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(400, gin.H{
@@ -42,7 +36,7 @@ func (ctrl Controller) QueryUserById(ctx *gin.Context) {
 		return
 	}
 
-	users, err := ctrl.App.QueryUserById(userId)
+	user, err := ctrl.App.QueryUserById(userId)
 	if err != nil {
 		log.Printf("user id not number, error: %s, id : %v", err.Error(), id)
 		ctx.JSON(500, gin.H{
@@ -53,11 +47,11 @@ func (ctrl Controller) QueryUserById(ctx *gin.Context) {
 
 	ctx.JSON(200, gin.H{
 		"message": "success",
-		"data":    users,
+		"data":    user,
 	})
 }
 
-func (ctrl Controller) CreateUser(ctx *gin.Context) {
+func (ctrl UserController) CreateUser(ctx *gin.Context) {
 	var user entity.User
 	if err := ctx.ShouldBind(&user); err != nil {
 		ctx.JSON(400, gin.H{

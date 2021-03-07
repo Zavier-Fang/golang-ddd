@@ -1,10 +1,8 @@
 package main
 
-import (
-	"server/adapter"
-)
+import "server/infrastructure/container"
 
 func main() {
-	adapter.Run()
+	var c container.Container
+	c.Register(container.SINGLE).Start()
 }
-

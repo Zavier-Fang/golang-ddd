@@ -2,8 +2,6 @@ package user
 
 import (
 	"server/adapter/repository"
-	"server/adapter/repository/user"
-	"server/domain"
 	"server/domain/user/entity"
 )
 
@@ -12,11 +10,7 @@ type User struct {
 	Repo repository.UserRepository
 }
 
-func NewUserDomain() domain.User {
-	return &User{Repo: user.NewUserRepository()}
-}
-
-func (u User) QueryById(id int) ([]*entity.User, error) {
+func (u User) QueryById(id int) (*entity.User, error) {
 	return u.Repo.QueryById(id)
 }
 
