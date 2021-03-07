@@ -55,7 +55,7 @@ func (c *Container) Register(mode string) *Container {
 	return nil
 }
 
-func (c *Container) Start() {
+func (c *Container) Run() {
 	c.userController.InitRoute(http.Engine)
 
 	if err := http.Engine.Run(":" + config.Config.GetString("http.port")); err != nil {

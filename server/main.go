@@ -4,5 +4,5 @@ import "server/infrastructure/container"
 
 func main() {
 	var c container.Container
-	c.Register(container.SINGLE).Start()
+	c.Register(container.SINGLE).Run()
 }
